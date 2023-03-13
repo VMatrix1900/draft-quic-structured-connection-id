@@ -85,7 +85,7 @@ Structured Connection ID {
 ~~~
 {: #cid-format title="Format of structured CID"}
 
-The format of the structured connection ID is shown in {{cid-format}}. The content and the format of the metadata field is defined by a template, carrying the information such as media characteristics in {{Section 3.1 of ?I-D.ietf-avtext-framemarking}}, the service requirement such as delay and importance in {{Section 5 of ?I-D.kaippallimalil-tsvwg-media-hdr-wireless-01}}. 
+The format of the structured connection ID is shown in {{cid-format}}. The content and the format of the metadata field is defined by a template, carrying the information such as media characteristics in {{Section 3.1 of ?I-D.ietf-avtext-framemarking}}, the service requirement such as delay and importance in {{Section 5 of ?I-D.kaippallimalil-tsvwg-media-hdr-wireless-01}}.
 
 If an intermediary acts as both the load balancer and the optimization point and they share the same trust relationship, the Metadata and the Server ID defined in {{?I-D.ietf-quic-load-balancers}} can be put together and share the same Config Parameter. Otherwise, if a QUIC connection goes through both load balancer and optimization point, additional mechanism is needed for the coexist of the metadata and the Server ID. The detail will be worked out in the later version.
 
