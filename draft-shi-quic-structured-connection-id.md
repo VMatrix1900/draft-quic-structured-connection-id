@@ -9,8 +9,8 @@ number:
 date:
 consensus: true
 v: 3
-area: Transport
-workgroup: QUIC
+area: "Transport"
+workgroup: "QUIC"
 keyword:
  - Internet-Draft
 
