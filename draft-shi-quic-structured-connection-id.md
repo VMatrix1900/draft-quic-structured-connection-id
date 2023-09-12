@@ -18,7 +18,7 @@ venue:
   type: "Working Group"
   arch: "https://mailarchive.ietf.org/arch/browse/quic/"
   github: "VMatrix1900/draft-quic-structured-connection-id"
-  latest: "https://VMatrix1900.github.io/draft-quic-structured-connection-id/draft-quic-structured-connection-id.html"
+  latest: "https://VMatrix1900.github.io/draft-quic-structured-connection-id/draft-shi-quic-structured-connection-id.html"
 
 author:
    -
