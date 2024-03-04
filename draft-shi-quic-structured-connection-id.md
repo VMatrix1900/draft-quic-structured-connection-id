@@ -100,10 +100,11 @@ The format of the structured connection ID is shown in {{cid-format}}. The conte
 
 # Coexistence with QUIC Load Balancer
 
-If an intermediary serves dual roles as both the load balancer and the optimization node, and if both entities are underpinned by a unified trust relationship, then it is feasible to consolidate the Metadata and the Server ID specified in {{?I-D.ietf-quic-load-balancers}}. This consolidation allows for the utilization of a singular Config Parameter and a shared encryption/decryption methodology. 
+As both the Metadata and Server ID share the same field within the Connection ID (CID), it's crucial to devise mechanisms that prevent conflicts and ensure their seamless coexistence.
+
+If an intermediary serves dual roles as both the load balancer and the optimization node, and if both entities are underpinned by a unified trust relationship, then it is feasible to consolidate the Metadata and the Server ID specified in {{?I-D.ietf-quic-load-balancers}}. This consolidation allows for the utilization of a singular Config Parameter and a shared encryption/decryption methodology.
 
 Conversely, if the load balancer and the optimization node are separated, the Server ID and the Metadata needs to be segregated too. One option is to split the CID into two segments: one for the Server ID and the other for the metadata. Each segment would be governed by its own set of Config Parameters and subjected to individual encryption protocols, ensuring the integrity and segregation of the transmitted information.
-
 
 # Security Considerations
 
