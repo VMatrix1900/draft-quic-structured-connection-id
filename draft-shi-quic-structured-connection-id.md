@@ -80,7 +80,12 @@ All wire formats will be depicted using the notation defined in {{Section 1.3 of
 ~~~
 {: #arch title="Architecture of the intermediary"}
 
-{{arch}} shows the architecture of the optimization intermediary. The sender endpoint encodes the metadata into the connection ID field (See {{format}}). The intermediary performs the related optimization based on the metadata. Since different applications may need to expose different metadata to the intermediary, a template is used to define the content and the format of metadata. The template is determined and distributed by a configuration agent. If the network between the intermediary and endpoints is not trusted by endpoints, the metadata MAY be encrypted. In this case, the parameter for encryption MUST be shared only with the authenticated intermediary through the configuration agent. The means of authentication and the distribution of these parameters and template is not in the scope of this document.
+{{arch}} shows the architecture of the optimization intermediary. The sender, which can be either the client or server based on the direction of communication, incorporates metadata into the connection ID field as outlined in the referenced section (See {{format}}). This metadata allows the intermediary to execute optimizations tailored to the information provided. Given that various applications may require the disclosure of distinct metadata to the intermediary, a standardized template is adopted to specify the metadata's content and structure. There are two primary methods for obtaining this template:
+
+1. For each category of application, a specific template is crafted and cataloged within a new IANA registry. This approach leverages the global accessibility of the template definition, eliminating the need for its distribution by the configuration agent. The responsibility for developing these templates falls to the respective working groups or documents, which is beyond the scope of this document.
+2. The configuration agent, operating within its domain, defines and disseminates the template. This strategy ensures the template's relevance and effectiveness is confined to the domain under the agent's control, tailored according to the capabilities of the network devices present.
+
+If the network between the intermediary and endpoints is not trusted, the metadata MUST be encrypted. In such scenarios, the encryption parameters must be exclusively shared with authenticated intermediaries, potentially via the configuration agent. A viable encryption strategy might involve adopting the algorithm proposed in {{?I-D.ietf-quic-load-balancers}}, ensuring the security of the metadata.
 
 # Structured Connection ID {#format}
 ~~~
@@ -91,9 +96,14 @@ Structured Connection ID {
 ~~~
 {: #cid-format title="Format of structured CID"}
 
-The format of the structured connection ID is shown in {{cid-format}}. The content and the format of the metadata field are defined by a template, carrying the information such as media characteristics in {{Section 3.1 of ?I-D.ietf-avtext-framemarking}}, the service requirement such as delay and importance in {{Section 5 of ?I-D.kaippallimalil-tsvwg-media-hdr-wireless-01}}.
+The format of the structured connection ID is shown in {{cid-format}}. The content and the format of the metadata field are defined by a template, carrying the information such as media characteristics in {{Section 3.1 of ?I-D.ietf-avtext-framemarking}}, the service requirement such as delay and importance in {{Section 3 of ?I-D.kaippallimalil-tsvwg-media-hdr-wireless-04}}.
 
-If an intermediary acts as both the load balancer and the optimization point and they share the same trust relationship, the Metadata and the Server ID defined in {{?I-D.ietf-quic-load-balancers}} can be put together and share the same Config Parameter. Otherwise, if a QUIC connection goes through both the load balancer and optimization point, an additional mechanism is needed for the coexistence of the metadata and the Server ID. The details will be worked out in the later version.
+# Coexistence with QUIC Load Balancer
+
+If an intermediary serves dual roles as both the load balancer and the optimization node, and if both entities are underpinned by a unified trust relationship, then it is feasible to consolidate the Metadata and the Server ID specified in {{?I-D.ietf-quic-load-balancers}}. This consolidation allows for the utilization of a singular Config Parameter and a shared encryption/decryption methodology. 
+
+Conversely, if the load balancer and the optimization node are separated, the Server ID and the Metadata needs to be segregated too. One option is to split the CID into two segments: one for the Server ID and the other for the metadata. Each segment would be governed by its own set of Config Parameters and subjected to individual encryption protocols, ensuring the integrity and segregation of the transmitted information.
+
 
 # Security Considerations
 
