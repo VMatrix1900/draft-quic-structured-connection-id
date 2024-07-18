@@ -1,0 +1,301 @@
+
+
+
+
+QUIC                                                              H. Shi
+Internet-Draft                                       Huawei Technologies
+Intended status: Standards Track                            4 March 2024
+Expires: 5 September 2024
+
+
+               Structured Connection ID Carrying Metadata
+             draft-shi-quic-structured-connection-id-latest
+
+Abstract
+
+   This document describes a mechanism to carry the metadata in the QUIC
+   connection ID so that the intermediary can perform optimization.
+
+About This Document
+
+   This note is to be removed before publishing as an RFC.
+
+   The latest revision of this draft can be found at
+   https://VMatrix1900.github.io/draft-quic-structured-connection-id/
+   draft-shi-quic-structured-connection-id.html.  Status information for
+   this document may be found at https://datatracker.ietf.org/doc/draft-
+   shi-quic-structured-connection-id/.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/VMatrix1900/draft-quic-structured-connection-id.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 5 September 2024.
+
+Copyright Notice
+
+   Copyright (c) 2024 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+   2.  Terminology
+     2.1.  Requirements Language
+   3.  Architecture
+   4.  Structured Connection ID
+   5.  Coexistence with QUIC Load Balancer
+   6.  Security Considerations
+   7.  References
+     7.1.  Normative References
+     7.2.  Informative References
+   Author's Address
+
+1.  Introduction
+
+   Nowadays, media applications are usually able to dynamically adjust
+   the size and quality of the stream to adapt to fluctuating network
+   conditions.  However, for the high throughput and low latency media
+   traffic, adaptation only by the endpoint is not good enough,
+   especially when the network condition is challenging, such as the
+   wireless networks discussed in
+   [I-D.kaippallimalil-tsvwg-media-hdr-wireless] and
+   [I-D.defoy-moq-relay-network-handling].  To this end, it is desirable
+   to have the intermediary performing optimization for the endpoint.
+   For example, low-priority packets can be dropped to save the resource
+   when the network is congested.
+
+   One example of such an intermediary is the relay in the Media over
+   QUIC working group.  To quote the charter from the MoQ working group.
+   "Media over QUIC (moq) will develop a simple low-latency media
+   delivery solution for ingest and distribution of media.  This
+   solution addresses use cases including live streaming, gaming, and
+   media conferencing and will scale efficiently."  "Even when media
+   content is end-to-end encrypted, the relays can access metadata
+   needed for caching (such as timestamp), making media forwarding
+   decisions (such as drop or delay under congestion), and so on."
+
+   Due to the end-to-end encryption of the QUIC, the intermediary does
+   not have the necessary metadata to perform optimization.  A similar
+   problem exists when the media is encrypted and transferred using SRTP
+   [RFC3711].  To solve the problem, [I-D.ietf-avtext-framemarking]
+   defines an extension of the RTP header containing the video frame
+   information.  This document defines an extension of the QUIC header,
+   using the connection ID to carry the necessary metadata.  To mitigate
+   the linkability between the multiple connection IDs of the same
+   connection and protect privacy, the metadata MAY be encrypted and
+   only decrypted by an authenticated intermediary.  Similar to
+   [I-D.ietf-quic-load-balancers], a configuration agent is used to
+   distribute the encryption parameters and the template of the
+   metadata.
+
+2.  Terminology
+
+   This document uses terms in the [I-D.ietf-quic-load-balancers]:
+
+   *  "client" and "server" refer to the QUIC endpoint.
+
+   *  Intermediary refers to a network element that forwards QUIC
+      packets and does not possess the QUIC connection keys.  Such an
+      intermediary can be QUIC proxy defined in the MASQUE working
+      group, wireless node described in the
+      [I-D.kaippallimalil-tsvwg-media-hdr-wireless], and relay defined
+      in the Media over QUIC working group.
+
+   *  CID: Connection ID in the QUIC header.
+
+   *  Configuration agent: An entity that distributes the encryption
+      parameter and the template of the metadata field.
+
+   All wire formats will be depicted using the notation defined in
+   Section 1.3 of [RFC9000].
+
+2.1.  Requirements Language
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+3.  Architecture
+
+                             + --------------+
+                             | Configuration |
+         +-------------------+     agent     +-------------------+
+        /                    +------+--------+                    \
+       /Config Parameters and template of the Metadata field in CID\
+      /                             |                               \
+     /          _______             |              _______           \
++---V----+     (       )     +------v-------+     (       )     +-----v----+
+| Client +----( Network )----+ Intermediary +----( Network )----+  Server  |
++--------+     (_______)     +--------------+     (_______)     +----------+
+
+              Figure 1: Architecture of the intermediary
+
+   Figure 1 shows the architecture of the optimization intermediary.
+   The sender, which can be either the client or server based on the
+   direction of communication, incorporates metadata into the connection
+   ID field as outlined in the referenced section (See Section 4).  This
+   metadata allows the intermediary to execute optimizations tailored to
+   the information provided.  Given that various applications may
+   require the disclosure of distinct metadata to the intermediary, a
+   standardized template is adopted to specify the metadata's content
+   and structure.  There are two primary methods for obtaining this
+   template:
+
+   1.  For each category of application, a specific template is crafted
+       and cataloged within a new IANA registry.  This approach
+       leverages the global accessibility of the template definition,
+       eliminating the need for its distribution by the configuration
+       agent.  The responsibility for developing these templates falls
+       to the respective working groups or documents, which is beyond
+       the scope of this document.
+
+   2.  The configuration agent, operating within its domain, defines and
+       disseminates the template.  This strategy ensures the template's
+       relevance and effectiveness is confined to the domain under the
+       agent's control, tailored according to the capabilities of the
+       network devices present.
+
+   If the network between the intermediary and endpoints is not trusted,
+   the metadata MUST be encrypted.  In such scenarios, the encryption
+   parameters must be exclusively shared with authenticated
+   intermediaries, potentially via the configuration agent.  A viable
+   encryption strategy might involve adopting the algorithm proposed in
+   [I-D.ietf-quic-load-balancers], ensuring the security of the
+   metadata.
+
+4.  Structured Connection ID
+
+   Structured Connection ID {
+     Config Parameters (8),
+     Metadata (40...152),
+   }
+
+                     Figure 2: Format of structured CID
+
+   The format of the structured connection ID is shown in Figure 2.  The
+   content and the format of the metadata field are defined by a
+   template, carrying the information such as media characteristics in
+   Section 3.1 of [I-D.ietf-avtext-framemarking], the service
+   requirement such as delay and importance in Section 3 of
+   [I-D.kaippallimalil-tsvwg-media-hdr-wireless-04].
+
+5.  Coexistence with QUIC Load Balancer
+
+   As both the Metadata and Server ID share the same field within the
+   Connection ID (CID), it's crucial to devise mechanisms that prevent
+   conflicts and ensure their seamless coexistence.
+
+   If an intermediary serves dual roles as both the load balancer and
+   the optimization node, and if both entities are underpinned by a
+   unified trust relationship, then it is feasible to consolidate the
+   Metadata and the Server ID specified in
+   [I-D.ietf-quic-load-balancers].  This consolidation allows for the
+   utilization of a singular Config Parameter and a shared encryption/
+   decryption methodology.
+
+   Conversely, if the load balancer and the optimization node are
+   separated, the Server ID and the Metadata needs to be segregated too.
+   One option is to split the CID into two segments: one for the Server
+   ID and the other for the metadata.  Each segment would be governed by
+   its own set of Config Parameters and subjected to individual
+   encryption protocols, ensuring the integrity and segregation of the
+   transmitted information.
+
+6.  Security Considerations
+
+   TBD
+
+7.  References
+
+7.1.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC3711]  Baugher, M., McGrew, D., Naslund, M., Carrara, E., and K.
+              Norrman, "The Secure Real-time Transport Protocol (SRTP)",
+              RFC 3711, DOI 10.17487/RFC3711, March 2004,
+              <https://www.rfc-editor.org/rfc/rfc3711>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC9000]  Iyengar, J., Ed. and M. Thomson, Ed., "QUIC: A UDP-Based
+              Multiplexed and Secure Transport", RFC 9000,
+              DOI 10.17487/RFC9000, May 2021,
+              <https://www.rfc-editor.org/rfc/rfc9000>.
+
+7.2.  Informative References
+
+   [I-D.defoy-moq-relay-network-handling]
+              de Foy, X. and R. Krishna, "MOQ Relays for Support of
+              High-Throughput Low-Latency Traffic", Work in Progress,
+              Internet-Draft, draft-defoy-moq-relay-network-handling-01,
+              23 January 2023, <https://datatracker.ietf.org/doc/html/
+              draft-defoy-moq-relay-network-handling-01>.
+
+   [I-D.ietf-avtext-framemarking]
+              Zanaty, M., Berger, E., and S. Nandakumar, "Video Frame
+              Marking RTP Header Extension", Work in Progress, Internet-
+              Draft, draft-ietf-avtext-framemarking-15, 26 July 2023,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-avtext-
+              framemarking-15>.
+
+   [I-D.ietf-quic-load-balancers]
+              Duke, M., Banks, N., and C. Huitema, "QUIC-LB: Generating
+              Routable QUIC Connection IDs", Work in Progress, Internet-
+              Draft, draft-ietf-quic-load-balancers-19, 5 February 2024,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-quic-
+              load-balancers-19>.
+
+   [I-D.kaippallimalil-tsvwg-media-hdr-wireless]
+              Kaippallimalil, J., Gundavelli, S., and S. Dawkins, "Media
+              Handling Considerations for Wireless Networks", Work in
+              Progress, Internet-Draft, draft-kaippallimalil-tsvwg-
+              media-hdr-wireless-04, 14 February 2024,
+              <https://datatracker.ietf.org/doc/html/draft-
+              kaippallimalil-tsvwg-media-hdr-wireless-04>.
+
+   [I-D.kaippallimalil-tsvwg-media-hdr-wireless-04]
+              Kaippallimalil, J., Gundavelli, S., and S. Dawkins, "Media
+              Handling Considerations for Wireless Networks", Work in
+              Progress, Internet-Draft, draft-kaippallimalil-tsvwg-
+              media-hdr-wireless-04, 14 February 2024,
+              <https://datatracker.ietf.org/doc/html/draft-
+              kaippallimalil-tsvwg-media-hdr-wireless-04>.
+
+Author's Address
+
+   Hang Shi
+   Huawei Technologies
+   China
+   Email: shihang9@huawei.com

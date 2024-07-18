@@ -1,0 +1,86 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2024-07-18T01:04:08.842433+00:00",
+  "repo": "VMatrix1900/draft-quic-structured-connection-id",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 1,
+      "id": "I_kwDOKSdVXs52-ebV",
+      "title": "Avoid identifying the content provider identity.",
+      "url": "https://github.com/VMatrix1900/draft-quic-structured-connection-id/issues/1",
+      "state": "OPEN",
+      "author": "VMatrix1900",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Sorry, I don't see how that would work. ISP puts the key onto a publicly-available server at, let's say, https://www.t-mobile.com/key.txt, and all the content providers would use that key, and nobody would abuse it? That can't be what you have in mind. I only see a solution with some sort of authorization for Certain Special content providers to use that key. And each content provider would be given its own key because unique keys are necessary for hygiene (key rotation and the eventual fallout of their contract and need to pull their key without disrupting service for other content providers). by @danwing",
+      "createdAt": "2023-11-16T05:25:09Z",
+      "updatedAt": "2023-11-16T16:53:03Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "VMatrix1900",
+          "authorAssociation": "OWNER",
+          "body": "No. The key should not be public. Authentication is required to obtain the key. The key can be anoymous using the technique developed in  [Privacy Pass](https://datatracker.ietf.org/doc/draft-ietf-privacypass-architecture/). @danwing",
+          "createdAt": "2023-11-16T06:20:44Z",
+          "updatedAt": "2023-11-16T06:21:01Z"
+        },
+        {
+          "author": "danwing",
+          "authorAssociation": "NONE",
+          "body": "Ok, thanks!",
+          "createdAt": "2023-11-16T16:53:03Z",
+          "updatedAt": "2023-11-16T16:53:03Z"
+        }
+      ]
+    }
+  ],
+  "pulls": []
+}
