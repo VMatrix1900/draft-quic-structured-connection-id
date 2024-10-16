@@ -4,8 +4,9 @@
 
 QUIC                                                              H. Shi
 Internet-Draft                                       Huawei Technologies
-Intended status: Standards Track                            4 March 2024
-Expires: 5 September 2024
+Intended status: Standards Track                                  M. Han
+Expires: 19 April 2025                                      China Unicom
+                                                         16 October 2024
 
 
                Structured Connection ID Carrying Metadata
@@ -14,7 +15,7 @@ Expires: 5 September 2024
 Abstract
 
    This document describes a mechanism to carry the metadata in the QUIC
-   connection ID so that the intermediary can perform optimization.
+   connection ID to communicate with the intermediary.
 
 About This Document
 
@@ -44,7 +45,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 September 2024.
+   This Internet-Draft will expire on 19 April 2025.
 
 Copyright Notice
 
@@ -72,7 +73,7 @@ Table of Contents
    7.  References
      7.1.  Normative References
      7.2.  Informative References
-   Author's Address
+   Authors' Addresses
 
 1.  Introduction
 
@@ -82,11 +83,10 @@ Table of Contents
    traffic, adaptation only by the endpoint is not good enough,
    especially when the network condition is challenging, such as the
    wireless networks discussed in
-   [I-D.kaippallimalil-tsvwg-media-hdr-wireless] and
-   [I-D.defoy-moq-relay-network-handling].  To this end, it is desirable
-   to have the intermediary performing optimization for the endpoint.
-   For example, low-priority packets can be dropped to save the resource
-   when the network is congested.
+   [I-D.kaippallimalil-tsvwg-media-hdr-wireless].  To this end, it is
+   desirable to have the intermediary performing optimization for the
+   endpoint.  For example, low-priority packets can be dropped to save
+   the resource when the network is congested.
 
    One example of such an intermediary is the relay in the Media over
    QUIC working group.  To quote the charter from the MoQ working group.
@@ -122,8 +122,8 @@ Table of Contents
       packets and does not possess the QUIC connection keys.  Such an
       intermediary can be QUIC proxy defined in the MASQUE working
       group, wireless node described in the
-      [I-D.kaippallimalil-tsvwg-media-hdr-wireless], and relay defined
-      in the Media over QUIC working group.
+      [I-D.kwbdgrr-tsvwg-net-collab-rqmts], and relay defined in the
+      Media over QUIC working group.
 
    *  CID: Connection ID in the QUIC header.
 
@@ -143,10 +143,10 @@ Table of Contents
 
 3.  Architecture
 
-                             + --------------+
-                             | Configuration |
-         +-------------------+     agent     +-------------------+
-        /                    +------+--------+                    \
+                             + ----------------+
+                             | Configuration   |
+         +-------------------+ agent(Optional) +-----------------+
+        /                    +------+----------+                  \
        /Config Parameters and template of the Metadata field in CID\
       /                             |                               \
      /          _______             |              _______           \
@@ -154,7 +154,8 @@ Table of Contents
 | Client +----( Network )----+ Intermediary +----( Network )----+  Server  |
 +--------+     (_______)     +--------------+     (_______)     +----------+
 
-              Figure 1: Architecture of the intermediary
+     Figure 1: Levarage Metadata In QUIC CID to communicate with
+                             intermediary
 
    Figure 1 shows the architecture of the optimization intermediary.
    The sender, which can be either the client or server based on the
@@ -189,6 +190,10 @@ Table of Contents
    [I-D.ietf-quic-load-balancers], ensuring the security of the
    metadata.
 
+   The metadata field can also be modified by the intermediary, enabling
+   the intermediary to pass the signal such as throughput advice as
+   defined by SCONE WG to the end host.
+
 4.  Structured Connection ID
 
    Structured Connection ID {
@@ -201,9 +206,8 @@ Table of Contents
    The format of the structured connection ID is shown in Figure 2.  The
    content and the format of the metadata field are defined by a
    template, carrying the information such as media characteristics in
-   Section 3.1 of [I-D.ietf-avtext-framemarking], the service
-   requirement such as delay and importance in Section 3 of
-   [I-D.kaippallimalil-tsvwg-media-hdr-wireless-04].
+   Section 3.1 of [I-D.ietf-avtext-framemarking] and metadata in
+   [I-D.kwbdgrr-tsvwg-net-collab-rqmts]
 
 5.  Coexistence with QUIC Load Balancer
 
@@ -256,19 +260,12 @@ Table of Contents
 
 7.2.  Informative References
 
-   [I-D.defoy-moq-relay-network-handling]
-              de Foy, X. and R. Krishna, "MOQ Relays for Support of
-              High-Throughput Low-Latency Traffic", Work in Progress,
-              Internet-Draft, draft-defoy-moq-relay-network-handling-01,
-              23 January 2023, <https://datatracker.ietf.org/doc/html/
-              draft-defoy-moq-relay-network-handling-01>.
-
    [I-D.ietf-avtext-framemarking]
               Zanaty, M., Berger, E., and S. Nandakumar, "Video Frame
               Marking RTP Header Extension", Work in Progress, Internet-
-              Draft, draft-ietf-avtext-framemarking-15, 26 July 2023,
+              Draft, draft-ietf-avtext-framemarking-16, 4 March 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-avtext-
-              framemarking-15>.
+              framemarking-16>.
 
    [I-D.ietf-quic-load-balancers]
               Duke, M., Banks, N., and C. Huitema, "QUIC-LB: Generating
@@ -281,21 +278,26 @@ Table of Contents
               Kaippallimalil, J., Gundavelli, S., and S. Dawkins, "Media
               Handling Considerations for Wireless Networks", Work in
               Progress, Internet-Draft, draft-kaippallimalil-tsvwg-
-              media-hdr-wireless-04, 14 February 2024,
+              media-hdr-wireless-05, 10 August 2024,
               <https://datatracker.ietf.org/doc/html/draft-
-              kaippallimalil-tsvwg-media-hdr-wireless-04>.
+              kaippallimalil-tsvwg-media-hdr-wireless-05>.
 
-   [I-D.kaippallimalil-tsvwg-media-hdr-wireless-04]
-              Kaippallimalil, J., Gundavelli, S., and S. Dawkins, "Media
-              Handling Considerations for Wireless Networks", Work in
-              Progress, Internet-Draft, draft-kaippallimalil-tsvwg-
-              media-hdr-wireless-04, 14 February 2024,
-              <https://datatracker.ietf.org/doc/html/draft-
-              kaippallimalil-tsvwg-media-hdr-wireless-04>.
+   [I-D.kwbdgrr-tsvwg-net-collab-rqmts]
+              Kaippallimalil, J., Wing, D., Gundavelli, S., Rajagopalan,
+              S., Dawkins, S., and M. Boucadair, "Requirements for Host-
+              to-Network Collaboration Signaling", Work in Progress,
+              Internet-Draft, draft-kwbdgrr-tsvwg-net-collab-rqmts-04,
+              14 October 2024, <https://datatracker.ietf.org/doc/html/
+              draft-kwbdgrr-tsvwg-net-collab-rqmts-04>.
 
-Author's Address
+Authors' Addresses
 
    Hang Shi
    Huawei Technologies
    China
    Email: shihang9@huawei.com
+
+
+   Mengyao Han
+   China Unicom
+   Email: hanmy12@chinaunicom.cn
