@@ -58,7 +58,7 @@ Due to the end-to-end encryption of the QUIC, the intermediary does not have the
 This document uses terms in the {{?I-D.ietf-quic-load-balancers}}:
 
 - "client" and "server" refer to the QUIC endpoint.
-- Intermediary refers to a network element that forwards QUIC packets and does not possess the QUIC connection keys. Such an intermediary can be QUIC proxy defined in the MASQUE working group, wireless node described in the {{?I-D.draft-kwbdgrr-tsvwg-net-collab-rqmts}}, and relay defined in the Media over QUIC working group.
+- Intermediary refers to a network element that forwards QUIC packets and does not possess the QUIC connection keys. Such an intermediary can be QUIC proxy defined in the MASQUE working group, wireless node described in the {{?I-D.kwbdgrr-tsvwg-net-collab-rqmts}}, and relay defined in the Media over QUIC working group.
 - CID: Connection ID in the QUIC header.
 - Configuration agent: An entity that distributes the encryption parameter and the template of the metadata field.
 
@@ -103,7 +103,7 @@ Structured Connection ID {
 ~~~
 {: #cid-format title="Format of structured CID"}
 
-The format of the structured connection ID is shown in {{cid-format}}. The content and the format of the metadata field are defined by a template, carrying the information such as media characteristics in {{Section 3.1 of ?I-D.ietf-avtext-framemarking}} and metadata in {{?I-D.draft-kwbdgrr-tsvwg-net-collab-rqmts/}}
+The format of the structured connection ID is shown in {{cid-format}}. The content and the format of the metadata field are defined by a template, carrying the information such as media characteristics in {{Section 3.1 of ?I-D.ietf-avtext-framemarking}} and metadata in {{?I-D.kwbdgrr-tsvwg-net-collab-rqmts}}
 
 # Coexistence with QUIC Load Balancer
 
