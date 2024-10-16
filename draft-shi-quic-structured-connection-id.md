@@ -36,13 +36,13 @@ informative:
 
 --- abstract
 
-This document describes a mechanism to carry the metadata in the QUIC connection ID so that the intermediary can perform optimization.
+This document describes a mechanism to carry the metadata in the QUIC connection ID to communicate with the intermediary.
 
 --- middle
 
 # Introduction
 
-Nowadays, media applications are usually able to dynamically adjust the size and quality of the stream to adapt to fluctuating network conditions. However, for the high throughput and low latency media traffic, adaptation only by the endpoint is not good enough, especially when the network condition is challenging, such as the wireless networks discussed in {{?I-D.kaippallimalil-tsvwg-media-hdr-wireless}} and {{?I-D.defoy-moq-relay-network-handling}}. To this end, it is desirable to have the intermediary performing optimization for the endpoint. For example, low-priority packets can be dropped to save the resource when the network is congested.
+Nowadays, media applications are usually able to dynamically adjust the size and quality of the stream to adapt to fluctuating network conditions. However, for the high throughput and low latency media traffic, adaptation only by the endpoint is not good enough, especially when the network condition is challenging, such as the wireless networks discussed in {{?I-D.kaippallimalil-tsvwg-media-hdr-wireless}}. To this end, it is desirable to have the intermediary performing optimization for the endpoint. For example, low-priority packets can be dropped to save the resource when the network is congested.
 
 One example of such an intermediary is the relay in the Media over QUIC working group. To quote the charter from the MoQ working group. "Media over QUIC (moq) will develop a simple low-latency media delivery solution for ingest and distribution of media. This solution addresses use cases including live streaming, gaming, and media conferencing and will scale efficiently." "Even when media content is end-to-end encrypted, the relays can access metadata needed for caching (such as timestamp), making media forwarding decisions (such as drop or delay under congestion), and so on."
 
@@ -53,7 +53,7 @@ Due to the end-to-end encryption of the QUIC, the intermediary does not have the
 This document uses terms in the {{?I-D.ietf-quic-load-balancers}}:
 
 - "client" and "server" refer to the QUIC endpoint.
-- Intermediary refers to a network element that forwards QUIC packets and does not possess the QUIC connection keys. Such an intermediary can be QUIC proxy defined in the MASQUE working group, wireless node described in the {{?I-D.kaippallimalil-tsvwg-media-hdr-wireless}}, and relay defined in the Media over QUIC working group.
+- Intermediary refers to a network element that forwards QUIC packets and does not possess the QUIC connection keys. Such an intermediary can be QUIC proxy defined in the MASQUE working group, wireless node described in the {{?I-D.draft-kwbdgrr-tsvwg-net-collab-rqmts}}, and relay defined in the Media over QUIC working group.
 - CID: Connection ID in the QUIC header.
 - Configuration agent: An entity that distributes the encryption parameter and the template of the metadata field.
 
@@ -66,10 +66,10 @@ All wire formats will be depicted using the notation defined in {{Section 1.3 of
 # Architecture
 
 ~~~
-                             + --------------+
-                             | Configuration |
-         +-------------------+     agent     +-------------------+
-        /                    +------+--------+                    \
+                             + ----------------+
+                             | Configuration   |
+         +-------------------+ agent(Optional) +-----------------+
+        /                    +------+----------+                  \
        /Config Parameters and template of the Metadata field in CID\
       /                             |                               \
      /          _______             |              _______           \
@@ -78,7 +78,7 @@ All wire formats will be depicted using the notation defined in {{Section 1.3 of
 +--------+     (_______)     +--------------+     (_______)     +----------+
 
 ~~~
-{: #arch title="Architecture of the intermediary"}
+{: #arch title="Levarage Metadata In QUIC CID to communicate with intermediary"}
 
 {{arch}} shows the architecture of the optimization intermediary. The sender, which can be either the client or server based on the direction of communication, incorporates metadata into the connection ID field as outlined in the referenced section (See {{format}}). This metadata allows the intermediary to execute optimizations tailored to the information provided. Given that various applications may require the disclosure of distinct metadata to the intermediary, a standardized template is adopted to specify the metadata's content and structure. There are two primary methods for obtaining this template:
 
@@ -86,6 +86,8 @@ All wire formats will be depicted using the notation defined in {{Section 1.3 of
 2. The configuration agent, operating within its domain, defines and disseminates the template. This strategy ensures the template's relevance and effectiveness is confined to the domain under the agent's control, tailored according to the capabilities of the network devices present.
 
 If the network between the intermediary and endpoints is not trusted, the metadata MUST be encrypted. In such scenarios, the encryption parameters must be exclusively shared with authenticated intermediaries, potentially via the configuration agent. A viable encryption strategy might involve adopting the algorithm proposed in {{?I-D.ietf-quic-load-balancers}}, ensuring the security of the metadata.
+
+The metadata field can also be modified by the intermediary, enabling the intermediary to pass the signal such as throughput advice as defined by SCONE WG to the end host.
 
 # Structured Connection ID {#format}
 ~~~
@@ -96,7 +98,7 @@ Structured Connection ID {
 ~~~
 {: #cid-format title="Format of structured CID"}
 
-The format of the structured connection ID is shown in {{cid-format}}. The content and the format of the metadata field are defined by a template, carrying the information such as media characteristics in {{Section 3.1 of ?I-D.ietf-avtext-framemarking}}, the service requirement such as delay and importance in {{Section 3 of ?I-D.kaippallimalil-tsvwg-media-hdr-wireless-04}}.
+The format of the structured connection ID is shown in {{cid-format}}. The content and the format of the metadata field are defined by a template, carrying the information such as media characteristics in {{Section 3.1 of ?I-D.ietf-avtext-framemarking}} and metadata in {{?I-D.draft-kwbdgrr-tsvwg-net-collab-rqmts/}}
 
 # Coexistence with QUIC Load Balancer
 
