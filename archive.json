@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-01T01:37:13.435757+00:00",
+  "timestamp": "2025-04-08T01:20:19.459961+00:00",
   "repo": "VMatrix1900/draft-quic-structured-connection-id",
   "labels": [
     {
@@ -115,6 +115,34 @@
       "mergeCommit": {
         "oid": "c7bf597b6d58b5d06c05f8b973b25944060cb73c"
       },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 3,
+      "id": "PR_kwDOKSdVXs6RjmMy",
+      "title": "upstream merge template repository",
+      "url": "https://github.com/VMatrix1900/draft-quic-structured-connection-id/pull/3",
+      "state": "OPEN",
+      "author": "VMatrix1900",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "template_sync"
+      ],
+      "body": "Merge https://github.com/martinthomson/internet-draft-template 9bbaf3f",
+      "createdAt": "2025-04-07T01:42:39Z",
+      "updatedAt": "2025-04-07T01:42:40Z",
+      "baseRepository": "VMatrix1900/draft-quic-structured-connection-id",
+      "baseRefName": "main",
+      "baseRefOid": "c7bf597b6d58b5d06c05f8b973b25944060cb73c",
+      "headRepository": "VMatrix1900/draft-quic-structured-connection-id",
+      "headRefName": "chore/template_sync_9bbaf3f",
+      "headRefOid": "0703b5334da0581cc5c25d6268007f874c7af057",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
       "comments": [],
       "reviews": []
     }
