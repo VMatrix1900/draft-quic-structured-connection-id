@@ -5,8 +5,8 @@
 QUIC                                                              H. Shi
 Internet-Draft                                       Huawei Technologies
 Intended status: Standards Track                                  M. Han
-Expires: 11 December 2025                                   China Unicom
-                                                             9 June 2025
+Expires: 29 January 2026                                    China Unicom
+                                                            28 July 2025
 
 
                Structured Connection ID Carrying Metadata
@@ -45,7 +45,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 December 2025.
+   This Internet-Draft will expire on 29 January 2026.
 
 Copyright Notice
 
