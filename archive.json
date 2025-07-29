@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-10T01:36:58.686367+00:00",
+  "timestamp": "2025-07-29T01:54:51.792713+00:00",
   "repo": "VMatrix1900/draft-quic-structured-connection-id",
   "labels": [
     {
@@ -189,7 +189,7 @@
       "id": "PR_kwDOKSdVXs6ZnFTb",
       "title": "upstream merge template repository",
       "url": "https://github.com/VMatrix1900/draft-quic-structured-connection-id/pull/5",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "VMatrix1900",
       "authorAssociation": "OWNER",
       "assignees": [],
@@ -198,13 +198,49 @@
       ],
       "body": "Merge https://github.com/martinthomson/internet-draft-template 666634c",
       "createdAt": "2025-06-09T01:54:50Z",
-      "updatedAt": "2025-06-09T01:54:51Z",
+      "updatedAt": "2025-07-28T02:04:28Z",
       "baseRepository": "VMatrix1900/draft-quic-structured-connection-id",
       "baseRefName": "main",
       "baseRefOid": "d77040157d99141621d1bd259879466f42327743",
       "headRepository": "VMatrix1900/draft-quic-structured-connection-id",
       "headRefName": "chore/template_sync_666634c",
       "headRefOid": "7df9f8adc6215c0b5e54c74722ae7d6875fadcc3",
+      "closedAt": "2025-07-28T02:04:27Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "VMatrix1900",
+          "authorAssociation": "OWNER",
+          "body": "[actions-template-sync] :construction_worker: automatically closed because there is a new open PR",
+          "createdAt": "2025-07-28T02:04:27Z",
+          "updatedAt": "2025-07-28T02:04:27Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 6,
+      "id": "PR_kwDOKSdVXs6g3Kb8",
+      "title": "upstream merge template repository",
+      "url": "https://github.com/VMatrix1900/draft-quic-structured-connection-id/pull/6",
+      "state": "OPEN",
+      "author": "VMatrix1900",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "template_sync"
+      ],
+      "body": "Merge https://github.com/martinthomson/internet-draft-template f2590c1",
+      "createdAt": "2025-07-28T02:04:29Z",
+      "updatedAt": "2025-07-28T02:04:29Z",
+      "baseRepository": "VMatrix1900/draft-quic-structured-connection-id",
+      "baseRefName": "main",
+      "baseRefOid": "d77040157d99141621d1bd259879466f42327743",
+      "headRepository": "VMatrix1900/draft-quic-structured-connection-id",
+      "headRefName": "chore/template_sync_f2590c1",
+      "headRefOid": "d811f97b18947aaa32dcc02775dd31f9720b2681",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
