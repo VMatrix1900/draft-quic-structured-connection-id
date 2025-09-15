@@ -5,8 +5,8 @@
 QUIC                                                              H. Shi
 Internet-Draft                                       Huawei Technologies
 Intended status: Standards Track                                  M. Han
-Expires: 29 January 2026                                    China Unicom
-                                                            28 July 2025
+Expires: 19 March 2026                                      China Unicom
+                                                       15 September 2025
 
 
                Structured Connection ID Carrying Metadata
@@ -45,7 +45,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 January 2026.
+   This Internet-Draft will expire on 19 March 2026.
 
 Copyright Notice
 
@@ -270,9 +270,9 @@ Table of Contents
    [I-D.ietf-quic-load-balancers]
               Duke, M., Banks, N., and C. Huitema, "QUIC-LB: Generating
               Routable QUIC Connection IDs", Work in Progress, Internet-
-              Draft, draft-ietf-quic-load-balancers-20, 3 March 2025,
+              Draft, draft-ietf-quic-load-balancers-21, 27 August 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-quic-
-              load-balancers-20>.
+              load-balancers-21>.
 
    [I-D.kaippallimalil-tsvwg-media-hdr-wireless]
               Kaippallimalil, J., Gundavelli, S., and S. Dawkins, "Media
